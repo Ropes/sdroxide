@@ -1,12 +1,16 @@
 {
-  description = "Example Rust development environment for Zero to Nix";
+  description = "sdroxide Rust Development Environment";
 
   # Flake inputs
   inputs = {
     # Latest stable Nixpkgs
     nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0";
     # A helper library for Rust + Nix
-    rust-overlay.url = "https://flakehub.com/f/oxalica/rust-overlay/*";
+    #rust-overlay.url = "https://flakehub.com/f/oxalica/rust-overlay/*";
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
   };
 
@@ -18,16 +22,28 @@
       rust-overlay,
     }:
     let
-      # Overlays enable you to customize the Nixpkgs attribute set
+      supportedSystems = [ "x86_64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+    in
+    let
       overlays = [
-        # Makes a `rust-bin` attribute available in Nixpkgs
         (import rust-overlay)
-        # Provides a `rustToolchain` attribute for Nixpkgs that we can use to
-        # create a Rust environment
         (final: prev: {
-          rustToolchain = prev.rust-bin.stable.latest.default;
+          rustToolchain = prev.rust-bin.stable."1.96.0".default.override {
+            extensions = [ "rust-src" "rust-analyzer" ];
+          };
         })
       ];
+      # Overlays enable you to customize the Nixpkgs attribute set
+      #overlays = [
+      #  # Makes a `rust-bin` attribute available in Nixpkgs
+      #  (import rust-overlay)
+      #  # Provides a `rustToolchain` attribute for Nixpkgs that we can use to
+      #  # create a Rust environment
+      #  (final: prev: {
+      #    rustToolchain = prev.rust-bin.stable.latest.default;
+      #  })
+      #];
 
       # Systems supported
       allSystems = [
