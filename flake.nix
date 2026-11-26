@@ -86,6 +86,7 @@
               alsa-lib
               libopus
               llvmPackages.libclang
+              soapysdr-with-plugins
             ];
             # Required by many build scripts (e.g., Rust's bindgen) to find libclang.so
             #LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";`
