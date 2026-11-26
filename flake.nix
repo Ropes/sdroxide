@@ -89,7 +89,7 @@
               soapysdr-with-plugins
             ];
             # Required by many build scripts (e.g., Rust's bindgen) to find libclang.so
-            #LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";`
+            LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
 
             packages =
               (with pkgs; [
