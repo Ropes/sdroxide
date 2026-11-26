@@ -91,6 +91,15 @@
             # Required by many build scripts (e.g., Rust's bindgen) to find libclang.so
             LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
 
+            # Tell bindgen where Nix's glibc and libclang built-in headers (stddef.h) live
+            BINDGEN_EXTRA_CLANG_ARGS =
+              (builtins.map (a: ''-I"${a}/include"'') [
+                pkgs.glibc.dev
+              ])
+              ++ [
+                ''-isystem "${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"''
+              ];
+
             packages =
               (with pkgs; [
                 # The package provided by our custom overlay. Includes cargo, Clippy, cargo-fmt,
