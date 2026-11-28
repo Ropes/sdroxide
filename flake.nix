@@ -72,11 +72,10 @@
               libtool
             ];
             buildInputs = with pkgs; [
-              alsa-lib
               libopus
               llvmPackages.libclang
               soapysdr-with-plugins
-            ];
+            ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ alsa-lib ];
             # Required by many build scripts (e.g., Rust's bindgen) to find libclang.so
             LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
 
@@ -89,7 +88,7 @@
                 ''-isystem "${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"''
               ];
 
-            packages = pkgs; [
+            packages = with pkgs; [
                 # The package provided by our custom overlay. Includes cargo, Clippy, cargo-fmt,
                 # rustdoc, rustfmt, and other tools.
                 rustToolchain

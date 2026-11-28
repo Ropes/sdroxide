@@ -1201,12 +1201,11 @@ and [`crates/sdroxide-data2g/PROVENANCE.md`](crates/sdroxide-data2g/PROVENANCE.m
 
 #### Optional: Use Nix Flake to manage dependencies
 
-If the system has Nix package manager, the `flake.nix` and `flake.lock` include all needed data to pull necessary build libraries. To utilize, launch enter the project's root directory where `flake.nix` is located, and launch the develop shell: 
+If the system has Nix package manager, the `flake.nix` and `flake.lock` include all needed data to pull necessary build libraries. Enter the project's root directory, where `flake.nix` is located, and run:
 
 ```
 $ nix develop
 ````
-t
 This will pull in the specified dependencies(rust, cmake, alsa-lib, soapysdr, etc). This will add the dependencies to the nix store, and will download a couple GBs.
 
 Then run the cargo build per usual: `$ cargo build --release`.
