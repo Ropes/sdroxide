@@ -21,10 +21,10 @@
       nixpkgs,
       rust-overlay,
     }:
-    let
-      supportedSystems = [ "x86_64-linux" ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-    in
+    #let
+    #  supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin"];
+    #in
+
     let
       overlays = [
         (import rust-overlay)
@@ -48,8 +48,8 @@
       # Systems supported
       allSystems = [
         "x86_64-linux" # 64-bit Intel/AMD Linux
-        # "aarch64-linux" # 64-bit ARM Linux
-        # "aarch64-darwin" # 64-bit ARM macOS
+        "aarch64-linux" # 64-bit ARM Linux
+        "aarch64-darwin" # 64-bit ARM macOS
       ];
 
       # Helper to provide system-specific attributes
