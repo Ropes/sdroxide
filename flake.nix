@@ -79,11 +79,9 @@
             # Required by many build scripts (e.g., Rust's bindgen) to find libclang.so
             LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
 
-            # Tell bindgen where Nix's glibc and libclang built-in headers (stddef.h) live
+            # Tell bindgen where the platform and libclang built-in headers (stddef.h) live
             BINDGEN_EXTRA_CLANG_ARGS =
-              (builtins.map (a: ''-I"${a}/include"'') [
-                pkgs.glibc.dev
-              ])
+              pkgs.lib.optional pkgs.stdenv.isLinux ''-I"${pkgs.glibc.dev}/include"''
               ++ [
                 ''-isystem "${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"''
               ];
