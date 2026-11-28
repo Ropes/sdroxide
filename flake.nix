@@ -21,9 +21,6 @@
       nixpkgs,
       rust-overlay,
     }:
-    #let
-    #  supportedSystems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin"];
-    #in
 
     let
       overlays = [
@@ -34,16 +31,6 @@
           };
         })
       ];
-      # Overlays enable you to customize the Nixpkgs attribute set
-      #overlays = [
-      #  # Makes a `rust-bin` attribute available in Nixpkgs
-      #  (import rust-overlay)
-      #  # Provides a `rustToolchain` attribute for Nixpkgs that we can use to
-      #  # create a Rust environment
-      #  (final: prev: {
-      #    rustToolchain = prev.rust-bin.stable.latest.default;
-      #  })
-      #];
 
       # Systems supported
       allSystems = [
@@ -78,6 +65,8 @@
             nativeBuildInputs = with pkgs; [
               pkg-config
               cmake
+              gcc
+              gnumake
               autoconf
               automake
               libtool
