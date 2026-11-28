@@ -55,7 +55,7 @@
         { pkgs }:
         {
           shellHook = ''
-            if [ -d .git ] && [ ! -f vendor/xng/Cargo.toml ]; then
+            if [ -d .git ]; then
               echo "Initializing missing Git submodules..."
               git submodule update --init --recursive
             fi
@@ -89,18 +89,11 @@
                 ''-isystem "${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"''
               ];
 
-            packages =
-              (with pkgs; [
+            packages = pkgs; [
                 # The package provided by our custom overlay. Includes cargo, Clippy, cargo-fmt,
                 # rustdoc, rustfmt, and other tools.
                 rustToolchain
-                rustc
-                cargo
-                rustfmt
-                clippy
-                rust-analyzer
-                pkgs.pkg-config
-              ])
+              ]
               ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [ libiconv ]);
               # Required for some crates (e.g., bindgen, openssl-sys) and rust-analyzer
               RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
